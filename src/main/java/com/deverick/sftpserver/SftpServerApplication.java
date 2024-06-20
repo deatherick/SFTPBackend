@@ -8,7 +8,6 @@ public class SftpServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SftpServerApplication.class, args);
-        while (true);
     }
 
 }
