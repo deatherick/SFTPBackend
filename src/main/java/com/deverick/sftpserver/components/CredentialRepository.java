@@ -1,4 +1,4 @@
-package com.deverick.sftpserver;
+package com.deverick.sftpserver.components;
 
 import com.warrenstrange.googleauth.ICredentialRepository;
 import lombok.AllArgsConstructor;

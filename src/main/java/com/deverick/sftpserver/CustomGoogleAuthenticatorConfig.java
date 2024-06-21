@@ -1,5 +1,6 @@
 package com.deverick.sftpserver;
 
+import com.deverick.sftpserver.components.CredentialRepository;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
