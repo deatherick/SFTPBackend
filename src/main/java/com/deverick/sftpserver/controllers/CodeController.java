@@ -46,4 +46,4 @@ public class CodeController {
     public Validation validateKey(@RequestBody ValidateCodeDto body) {
         return new Validation(gAuth.authorizeUser(body.getUsername(), body.getCode()));
     }
-}
+  }
