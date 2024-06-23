@@ -3,7 +3,10 @@ package com.deverick.sftpserver.services;
 import com.deverick.sftpserver.dtos.RootObject;
 import com.deverick.sftpserver.dtos.User;
 import com.deverick.sftpserver.dtos.UserForCSV;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.deverick.sftpserver.models.DetailData;
+import com.deverick.sftpserver.models.SummaryData;
+import com.deverick.sftpserver.repositories.DetailDataRepository;
+import com.deverick.sftpserver.repositories.SummaryDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -28,9 +31,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class ScheduledService {
@@ -49,6 +49,12 @@ public class ScheduledService {
 
     @Autowired
     private FileHelper fileHelper;
+
+    @Autowired
+    private DetailDataRepository detailDataRepository;
+
+    @Autowired
+    private SummaryDataRepository summaryDataRepository;
 
     public void dummyMethod() {
         System.out.println("Scheduled task executed at: " + new Date());
@@ -126,6 +132,7 @@ public class ScheduledService {
                             .toList().size())
             });
 
+            // TODO: This could be done with dictionary and a loop
             csvWriter.writeNext(new String[]{"age", "male", "female", "other"});
             csvWriter.writeNext(new String[]{
                     "00-10",
@@ -142,25 +149,109 @@ public class ScheduledService {
             csvWriter.writeNext(new String[]{
                     "11-20",
                      String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("male") && t.getAge() > 11 && t.getAge() <= 20)
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 10 && t.getAge() <= 20)
                             .toList().size()),
                     String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("female") && t.getAge() > 11 && t.getAge() <= 20)
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 10 && t.getAge() <= 20)
                             .toList().size()),
                     String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("other") && t.getAge() > 11 && t.getAge() <= 20)
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 10 && t.getAge() <= 20)
                             .toList().size()),
             });
             csvWriter.writeNext(new String[]{
                     "21-30",
                      String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("male") && t.getAge() > 21 && t.getAge() <= 30)
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 20 && t.getAge() <= 30)
                             .toList().size()),
                     String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("female") && t.getAge() > 21 && t.getAge() <= 30)
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 20 && t.getAge() <= 30)
                             .toList().size()),
                     String.valueOf(Arrays.stream(root.users).toList().stream()
-                            .filter(t -> t.getGender().equals("other") && t.getAge() > 21 && t.getAge() <= 30)
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 20 && t.getAge() <= 30)
+                            .toList().size()),
+            });
+            csvWriter.writeNext(new String[]{
+                    "31-40",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 30 && t.getAge() <= 40)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 30 && t.getAge() <= 40)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 30 && t.getAge() <= 40)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "41-50",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 40 && t.getAge() <= 50)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 40 && t.getAge() <= 50)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 40 && t.getAge() <= 50)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "51-60",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 50 && t.getAge() <= 60)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 50 && t.getAge() <= 60)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 50 && t.getAge() <= 60)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "61-70",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 60 && t.getAge() <= 70)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 60 && t.getAge() <= 70)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 60 && t.getAge() <= 70)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "71-80",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 70 && t.getAge() <= 80)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 70 && t.getAge() <= 80)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 70 && t.getAge() <= 80)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "81-90",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 80 && t.getAge() <= 90)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 80 && t.getAge() <= 90)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 80 && t.getAge() <= 90)
+                            .toList().size()),
+            });
+             csvWriter.writeNext(new String[]{
+                    "91+",
+                     String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("male") && t.getAge() > 90)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("female") && t.getAge() > 90)
+                            .toList().size()),
+                    String.valueOf(Arrays.stream(root.users).toList().stream()
+                            .filter(t -> t.getGender().equals("other") && t.getAge() > 90)
                             .toList().size()),
             });
 
@@ -191,6 +282,16 @@ public class ScheduledService {
             //Upload CSV file to FTP
             this.fileHelper.uploadFileFromLocalDirToSFTP(channel, remoteDirectory, CsvFile);
             this.fileHelper.uploadFileFromLocalDirToSFTP(channel, remoteDirectory, new File(localDirectory + csvSummaryFileName));
+
+            //Store data to database
+            DetailData detailData = new DetailData();
+            detailData.setFile(remoteDirectory + csvFileName);
+            DetailData insertedDetailData = detailDataRepository.save(detailData);
+
+            SummaryData summaryData = new SummaryData();
+            summaryData.setFile(remoteDirectory + csvSummaryFileName);
+            summaryData.setDetailData(insertedDetailData);
+            summaryDataRepository.save(summaryData);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

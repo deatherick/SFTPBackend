@@ -11,7 +11,8 @@ public class ScheduledTasks {
     @Autowired
     private ScheduledService demoService;
 
-    @Scheduled(cron = "0 * * * * *") // Cron expression for running every minute
+    //@Scheduled(cron = "0 * * * * *") // Cron expression for running every minute for testing
+    @Scheduled(cron = "0 0 12 * * ?") // Cron expression for running every day
     public void execute() {
         demoService.dummyMethod();
     }
